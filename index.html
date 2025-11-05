@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Carta con input circular</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="card">
+    <div class="card-content">
+      <div class="title">Selecciona un número</div>
+      <div class="subtitle">Escribe un número del 1 al 158</div>
+
+      <div class="dial">
+        <input id="numero" type="number" placeholder="1" aria-label="Número entre 1 y 158" />
+      </div>
+
+      <div class="help">Escribe el número y presiona Enter</div>
+      <div class="error" id="error"></div>
+      <div class="help">El juego es...</div>
+      <div id="frase" class="frase"></div>
+    </div>
+  </main>
+
+<script src="script.js"></script>
+</body>
+</html>
