@@ -1,39 +1,24 @@
-# --- Node & Vite ---
-node_modules/
-dist/
-vite.config.ts.timestamp*
+# Logs
+logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-LAPOLLA/
-package-lock.json
-upload_data.js
-data.json
-# --- Environment variables ---
-.env
-.env.local
-.env.*.local
+node_modules
+dist
+dist-ssr
+*.local
 
-# --- System files (Windows / OneDrive / macOS) ---
-Thumbs.db
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-ehthumbs.db
-Desktop.ini
-*.tmp
-~$*
-
-# --- IDE / Editor ---
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# --- OS sync folders ---
-.OneDrive*
-.sync*
-
-# --- Optional: build cache or editor metadata ---
-.cache/
-*.lock
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

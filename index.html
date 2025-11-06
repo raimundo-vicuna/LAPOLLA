@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Carta con input circular</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>La Polla</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <h1>La Polla</h1>
   <main class="card">
     <div class="card-content">
       <div class="title">Selecciona un número</div>
       <div class="subtitle">Escribe un número del 1 al 158</div>
-
       <div class="dial">
-        <input id="numero" type="number" placeholder="1" aria-label="Número entre 1 y 158" />
+        <input id="numero" type="number" inputmode="numeric" pattern="[0-9]* " placeholder="1" aria-label="Número entre 1 y 158" />
       </div>
-
-      <div class="help">Escribe el número y presiona Enter</div>
-      <div class="error" id="error"></div>
-      <div class="help">El juego es...</div>
+      <button id="buscarBtn" class="buscar-btn">Buscar</button>
+      <div class="help">Escribe el número y presiona Enter o el botón</div>
       <div id="frase" class="frase"></div>
     </div>
   </main>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-<script type="module" src="script.js"></script>
+<script src="firebaseConfig.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>

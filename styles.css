@@ -119,10 +119,34 @@ body{
   font-size:18px;
   text-align:center;
   color:#ff7ee5;
-  opacity:0;
+  opacity:1;
   transition:opacity .6s ease, text-shadow .8s ease;
 }
 .frase.visible{
   opacity:1;
   text-shadow:0 0 8px #ff7ee5, 0 0 18px #b800ff;
+}
+
+.buscar-btn {
+  margin-top: 12px;
+  padding: 12px 36px;
+  border: none;
+  border-radius: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  box-shadow: 0 0 20px rgba(184, 0, 255, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.buscar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(255, 47, 146, 0.45);
+}
+
+.buscar-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 10px rgba(255, 47, 146, 0.3);
 }
