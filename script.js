@@ -48,3 +48,4 @@ window.onload = async () => {
   btn.addEventListener("click", buscar);
   btn.addEventListener("touchstart", buscar);
 };
+

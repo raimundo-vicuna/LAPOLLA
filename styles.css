@@ -7,8 +7,13 @@
   --text:#ffffff;
   --muted:#c7b6d9;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
+*{
+  box-sizing:border-box;
+  cursor:default;
+}
+html,body{
+  height:100%;
+}
 body{
   margin:0;
   font-family:Poppins,system-ui,Segoe UI,Roboto,Arial;
@@ -22,6 +27,77 @@ body{
   padding:20px;
 }
 
+h1 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  user-select: none;
+}
+
+h1 span:nth-child(1) {
+  color: var(--accent1);
+  text-shadow:
+    0 0 12px var(--accent1),
+    0 0 30px rgba(184, 0, 255, 0.6),
+    0 0 60px rgba(184, 0, 255, 0.3);
+  transform: skewX(-10deg);
+  animation: colorShift1 6s ease-in-out infinite alternate;
+}
+
+h1 span:nth-child(2) {
+  color: var(--accent2);
+  text-shadow:
+    0 0 12px var(--accent2),
+    0 0 30px rgba(255, 47, 146, 0.6),
+    0 0 60px rgba(255, 47, 146, 0.3);
+  transform: skewX(-8deg);
+  animation: colorShift2 6s ease-in-out infinite alternate;
+}
+
+@keyframes colorShift1 {
+  0% {
+    color: var(--accent1);
+    text-shadow:
+      0 0 10px var(--accent1),
+      0 0 25px rgba(184, 0, 255, 0.5),
+      0 0 45px rgba(184, 0, 255, 0.3);
+  }
+  100% {
+    color: var(--accent2);
+    text-shadow:
+      0 0 10px var(--accent2),
+      0 0 25px rgba(255, 47, 146, 0.5),
+      0 0 45px rgba(255, 47, 146, 0.3);
+  }
+}
+
+@keyframes colorShift2 {
+  0% {
+    color: var(--accent2);
+    text-shadow:
+      0 0 10px var(--accent2),
+      0 0 25px rgba(255, 47, 146, 0.5),
+      0 0 45px rgba(255, 47, 146, 0.3);
+  }
+  100% {
+    color: var(--accent1);
+    text-shadow:
+      0 0 10px var(--accent1),
+      0 0 25px rgba(184, 0, 255, 0.5),
+      0 0 45px rgba(184, 0, 255, 0.3);
+  }
+}
+
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .card{
   width:min(92vw,540px);
   background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)), var(--card);
@@ -150,3 +226,4 @@ body{
   transform: scale(0.97);
   box-shadow: 0 0 10px rgba(255, 47, 146, 0.3);
 }
+
