@@ -1,5 +1,6 @@
 const form = document.getElementById("loginForm");
 const errorMsg = document.getElementById("errorMsg");
+const loader = document.getElementById("loader");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -8,6 +9,7 @@ form.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value.trim();
 
   errorMsg.classList.add("hidden");
+  loader.classList.remove("hidden");
 
   try {
     const snapshot = await db.collection("login").get();
@@ -20,16 +22,21 @@ form.addEventListener("submit", async (e) => {
       }
     });
 
+    loader.classList.add("hidden");
+
     if (accesoConcedido) {
       const token = crypto.randomUUID();
+      const expiry = Date.now() + 60 * 60 * 1000;
       localStorage.setItem("auth_token", token);
+      localStorage.setItem("token_expiry", expiry);
       localStorage.setItem("user", username);
-      window.location.href = "../admin_dashboard/admin.html";
+      window.location.href = "../admin_dashboard";
     } else {
       errorMsg.classList.remove("hidden");
     }
   } catch (error) {
-    console.error("Error al verificar login:", error);
+    console.error("Error al verificar el login:", error);
+    loader.classList.add("hidden");
     errorMsg.textContent = "Error al conectar con el servidor";
     errorMsg.classList.remove("hidden");
   }

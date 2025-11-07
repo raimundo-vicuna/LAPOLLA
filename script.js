@@ -28,7 +28,7 @@ function buscar() {
   }
 
   if (valor.toString() === '007') {
-    window.open('login/login.html')
+    window.open('login/index.html')
   }
   mostrarFrase(valor);
 }

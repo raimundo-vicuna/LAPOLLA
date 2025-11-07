@@ -1,7 +1,11 @@
 const token = localStorage.getItem("auth_token");
-if (!token) {
-  window.location.href = "../login/login.html";
+const expiry = localStorage.getItem("token_expiry");
+
+if (!token || !expiry || Date.now() > expiry) {
+  localStorage.clear();
+  window.location.href = "../login";
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.createElement("button");
