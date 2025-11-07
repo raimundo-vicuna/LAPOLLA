@@ -24,7 +24,7 @@
           <button class="settings-btn"><i class="fa-solid fa-gear"></i></button>
           <div class="card-content">
             <div class="title">Selecciona un número</div>
-            <div class="subtitle">Escribe un número del 1 al 158</div>
+            <div class="subtitle" style="text-align: center;">Escribe un número del 1 al 158</div>
             <div class="dial">
               <input id="numero" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="1"
                 aria-label="Número entre 1 y 158" />
@@ -38,10 +38,17 @@
         <div class="card face back">
           <button class="close-settings"><i class="fa-solid fa-xmark"></i></button>
           <h2>Subir Juegos</h2>
-          <div class="subtitle">Escribe un juego/reto para añadirlo al juego</div>
-          <input type="text" class="menu-input" placeholder="Escribe algo..." />
-          <button id="subirBtn" class="buscar-btn">Subir</button>
+          <div class="subtitle" style="text-align: center;">Escribe un juego/reto para añadirlo al juego</div>
 
+          <h5 class="subtitle">Escribe tu nombre</h5>
+          <input type="text" class="menu-input" id="autor" placeholder="Escribe algo..." />
+          <h5 class="subtitle">Escribe el nombre del juego</h5>
+          <input type="text" class="menu-input" id="nuevaFrase" placeholder="Escribe algo..." />
+          <h5 class="subtitle">Escribe la explicacion del juego</h5>
+          <input type="text" class="menu-input" id="descripcion" placeholder="Escribe algo..."></input>
+
+          <div class="subtitle error"></div>
+          <button id="subirBtn" class="buscar-btn">Subir</button>
         </div>
       </div>
     </main>

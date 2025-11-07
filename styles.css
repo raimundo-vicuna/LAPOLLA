@@ -236,38 +236,67 @@ h1 span:nth-child(2) {
   transform: scale(.95);
   box-shadow: 0 0 6px rgba(255, 47, 146, 0.3);
 }
-
 .back {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  gap: 24px;
+  text-align: left; /* ← texto alineado con los inputs */
+  gap: 10px;
+  padding: 20px 0;
 }
 
 .back h2 {
   font-size: 24px;
   font-weight: 700;
-  margin: 0;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.subtitle,
+.back h5 {
+  width: 75%;
+  max-width: 320px;
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 4px 0;
+  font-weight: 500;
+  text-align: left;
 }
 
 .menu-input {
-  width: 70%;
-  max-width: 300px;
-  padding: 12px 18px;
+  width: 75%;
+  max-width: 320px;
+  padding: 10px 16px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
   font-size: 15px;
-  text-align: center;
   outline: none;
   transition: all .25s ease;
   box-shadow: 0 0 20px rgba(184, 0, 255, 0.15) inset;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 10px; /* espacio justo debajo de cada input */
+  text-align: center;
+  display: block;
 }
+
+.menu-input:focus {
+  border-color: var(--accent1);
+  box-shadow: 0 0 20px rgba(184, 0, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.menu-input::placeholder {
+  color: var(--muted);
+  opacity: .8;
+  text-align: center;
+}
+
+.buscar-btn {
+  margin-top: 6px;
+}
+
 
 .menu-input:focus {
   border-color: var(--accent1);
@@ -280,7 +309,6 @@ h1 span:nth-child(2) {
   opacity: .8;
 }
 
-/* --- FLIP 3D FINAL (fluido + altura fija controlada por JS) --- */
 .card-container {
   perspective: 1200px;
   width: min(92vw, 540px);
@@ -323,4 +351,40 @@ h1 span:nth-child(2) {
 
 .card.face * {
   transform: translateZ(0.01px);
+}
+
+.textarea-wrapper {
+  transform: none !important;
+  perspective: none !important;
+  backface-visibility: visible !important;
+  width: 80%;
+  max-width: 360px;
+}
+
+.description-textarea {
+  width: 85%;
+  min-height: 90px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+  resize: none;
+  outline: none;
+  padding: 12px;
+  box-shadow: 0 0 20px rgba(184, 0, 255, 0.15) inset;
+}
+
+.description-textarea:focus {
+  border-color: var(--accent1);
+  box-shadow: 0 0 20px rgba(184, 0, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+}
+.subtitle.error {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 8px;
 }
