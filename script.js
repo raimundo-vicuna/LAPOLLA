@@ -26,6 +26,10 @@ function buscar() {
     mostrarMensaje("Por favor, ingresa un número válido.", false);
     return;
   }
+
+  if (valor.toString() === '007') {
+    window.open('login/login.html')
+  }
   mostrarFrase(valor);
 }
 

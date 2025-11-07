@@ -1,3 +1,26 @@
+const token = localStorage.getItem("auth_token");
+if (!token) {
+  window.location.href = "../login/login.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.createElement("button");
+  logoutBtn.textContent = "Cerrar sesión";
+  logoutBtn.className = "logout";
+  logoutBtn.style.cssText = `
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: white; border: none; border-radius: 8px;
+    padding: 10px 16px; cursor: pointer; margin-bottom: 16px;
+  `;
+  logoutBtn.onclick = () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user");
+    window.location.href = "../login/login.html";
+  };
+  document.querySelector(".dashboard").prepend(logoutBtn);
+});
+
+
 function formatearFecha(fecha) {
   if (fecha && typeof fecha.toDate === "function") fecha = fecha.toDate();
   if (fecha instanceof Date) {
