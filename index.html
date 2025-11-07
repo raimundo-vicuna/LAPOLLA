@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,33 +9,49 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="La Polla">
   <link rel="apple-touch-icon" href="icons/icon-512.png">
-  <link rel="icon" type="icons/png" sizes="512x512" href="icons/icon-512.png">
-
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
   <title>La Polla</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
- <div class="wrapper">
-  <h1><span>La</span><span> Polla</span></h1>
-  <main class="card">
-    <div class="card-content">
-      <div class="title">Selecciona un número</div>
-      <div class="subtitle">Escribe un número del 1 al 158</div>
-      <div class="dial">
-        <input id="numero" type="number" inputmode="numeric" pattern="[0-9]* " placeholder="1" aria-label="Número entre 1 y 158" />
+  <div class="wrapper">
+    <h1><span>La</span><span> Polla</span></h1>
+
+    <main class="card-container">
+      <div class="card-inner">
+        <div class="card face front">
+          <button class="settings-btn"><i class="fa-solid fa-gear"></i></button>
+          <div class="card-content">
+            <div class="title">Selecciona un número</div>
+            <div class="subtitle">Escribe un número del 1 al 158</div>
+            <div class="dial">
+              <input id="numero" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="1"
+                aria-label="Número entre 1 y 158" />
+            </div>
+            <button id="buscarBtn" class="buscar-btn">Buscar</button>
+            <div class="help">Escribe el número y presiona el botón</div>
+            <div id="frase" class="frase"></div>
+          </div>
+        </div>
+
+        <div class="card face back">
+          <button class="close-settings"><i class="fa-solid fa-xmark"></i></button>
+          <h2>Subir Juegos</h2>
+          <div class="subtitle">Escribe un juego/reto para añadirlo al juego</div>
+          <input type="text" class="menu-input" placeholder="Escribe algo..." />
+          <button id="subirBtn" class="buscar-btn">Subir</button>
+
+        </div>
       </div>
-      <button id="buscarBtn" class="buscar-btn">Buscar</button>
-      <div class="help">Escribe el número y presiona Enter o el botón</div>
-      <div id="frase" class="frase"></div>
-    </div>
-  </main>
- </div>
+    </main>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-<script src="firebaseConfig.js"></script>
-<script src="script.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebaseConfig.js"></script>
+  <script src="https://kit.fontawesome.com/f1b26fbbec.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>
