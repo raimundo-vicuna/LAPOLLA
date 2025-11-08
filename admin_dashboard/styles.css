@@ -40,7 +40,6 @@ h1 {
   font-weight: 600;
 }
 
-/* === Loader === */
 .loader {
   display: flex;
   flex-direction: column;
@@ -69,7 +68,6 @@ h1 {
   display: none;
 }
 
-/* === Tabla (PC) === */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -85,6 +83,7 @@ h1 {
   padding: 12px 16px;
   text-align: left;
   font-size: 0.95rem;
+  width: auto;
 }
 
 .data-table th {
@@ -131,7 +130,6 @@ h1 {
 .reject { border-color: var(--accent2); }
 .reject:hover { background: var(--accent2); }
 
-/* === Responsive === */
 @media (max-width: 768px) {
   .data-table,
   .data-table thead,
@@ -183,4 +181,39 @@ h1 {
     justify-content: flex-end;
     padding-top: 8px;
   }
+}
+.logout {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 47, 146, 0.4);
+}
+
+.logout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(184, 0, 255, 0.5);
+}
+
+.logout:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 10px rgba(255, 47, 146, 0.3);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.buttons button {
+  max-width: 15%;
+  margin-right: 2rem;
 }

@@ -9,6 +9,7 @@ async function cargarFrases() {
       frases[doc.id] = doc.data().frase || doc.data().value || doc.data().texto || "(sin texto)";
     });
     localStorage.setItem("frases", JSON.stringify(frases));
+    localStorage.setItem("range", JSON.stringify(snapshot.size))
   } catch {
     mostrarMensaje("Error al cargar frases. Intenta más tarde.", false);
   }
@@ -16,9 +17,16 @@ async function cargarFrases() {
 
 function mostrarFrase(num) {
   const fraseBox = document.getElementById("frase");
+
+  if (num === "00") {
+    fraseBox.textContent = "consola";
+    return;
+  }
+
   const texto = frases[num.toString()];
   fraseBox.textContent = texto || "Número no encontrado.";
 }
+
 
 function buscar() {
   const valor = document.getElementById("numero").value.trim();
@@ -27,8 +35,8 @@ function buscar() {
     return;
   }
 
-  if (valor.toString() === '007') {
-    window.open('login/index.html')
+  if (valor.toString() === '00') {
+    window.open('login/index.html', "_blank")
   }
   mostrarFrase(valor);
 }
@@ -90,11 +98,64 @@ async function agregarNuevaFrase() {
 
 document.querySelector("#subirBtn").addEventListener("click", agregarNuevaFrase);
 
+function renderFrasesBack() {
+  const raw = localStorage.getItem("frases");
+  if (!raw) return;
+
+  const frases = JSON.parse(raw);
+  const configCard = document.querySelector(".card.back.config");
+  if (!configCard) return;
+
+  Array.from(configCard.children).forEach(el => {
+    if (!el.classList.contains("close-settings") && el.tagName !== "H2") el.remove();
+  });
+
+  const title = document.createElement("div");
+  title.className = "subtitle";
+  title.textContent = "Tus juegos";
+  title.style.textAlign = "center";
+  configCard.appendChild(title);
+
+  const container = document.createElement("div");
+  container.className = "config-table-container";
+
+  const table = document.createElement("table");
+  table.className = "config-table";
+
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Frase</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${Object.entries(frases)
+        .map(
+          ([num, texto]) => `
+          <tr>
+            <td>${num}</td>
+            <td>${texto}</td>
+          </tr>
+        `
+        )
+        .join("")}
+    </tbody>
+  `;
+
+  container.appendChild(table);
+  configCard.appendChild(container);
+}
+
+renderFrasesBack();
+
+
 window.onload = async () => {
   const guardadas = localStorage.getItem("frases");
   if (guardadas) frases = JSON.parse(guardadas);
   else await cargarFrases();
-
+  const rangeDiv = document.querySelector(".range");
+  rangeDiv.textContent = `Escribe un número del 1 al ${localStorage.getItem("range") || 158}`;
   const input = document.getElementById("numero");
   const btn = document.getElementById("buscarBtn");
 
@@ -106,30 +167,49 @@ window.onload = async () => {
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".card-container");
   const front = document.querySelector(".card.front");
-  const back = document.querySelector(".card.back");
-  const settingsBtn = document.querySelector(".settings-btn");
-  const closeBtn = document.querySelector(".close-settings");
+  const backs = document.querySelectorAll(".card.back");
+  const settingsBtn = document.querySelector(".settings-btn");   
+  const settingsBtn2 = document.querySelector(".settings-btn2"); 
+  const closeBtns = document.querySelectorAll(".close-settings");
   const fraseBox = document.getElementById("frase");
+
+  let activeBack = null;
 
   function setFlipHeight() {
     const hFront = front.scrollHeight;
-    const hBack = back.scrollHeight;
+    const hBack = activeBack ? activeBack.scrollHeight : 0;
     const h = Math.max(hFront, hBack);
     container.style.height = h + "px";
   }
 
-  function flipOn() {
-    container.classList.add("flipped");
+  function flipTo(backSelector, directionClass) {
+    backs.forEach(b => b.style.zIndex = "0");
+    activeBack = document.querySelector(backSelector);
+    if (activeBack) activeBack.style.zIndex = "1";
+
+    container.classList.remove("flipped", "flipped-left");
+    container.classList.add(directionClass);
     requestAnimationFrame(setFlipHeight);
+  }
+
+  function flipRight() {
+    flipTo(".card.back:not(.config)", "flipped");
+  }
+
+  function flipLeft() {
+    flipTo(".card.back.config", "flipped-left"); 
   }
 
   function flipOff() {
-    container.classList.remove("flipped");
+    container.classList.remove("flipped", "flipped-left");
+    activeBack = null;
     requestAnimationFrame(setFlipHeight);
   }
 
-  if (settingsBtn) settingsBtn.addEventListener("click", flipOn);
-  if (closeBtn) closeBtn.addEventListener("click", flipOff);
+  if (settingsBtn) settingsBtn.addEventListener("click", flipRight);
+  if (settingsBtn2) settingsBtn2.addEventListener("click", flipLeft);
+  closeBtns.forEach(btn => btn.addEventListener("click", flipOff));
+
   window.addEventListener("resize", setFlipHeight);
 
   if (fraseBox) {

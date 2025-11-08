@@ -59,20 +59,22 @@ h1 span:nth-child(2) {
 @keyframes colorShift1 {
   0% {
     color: var(--accent1);
+    text-shadow: 0 0 12px var(--accent1), 0 0 30px rgba(184, 0, 255, .6);
   }
-
   100% {
     color: var(--accent2);
+    text-shadow: 0 0 12px var(--accent2), 0 0 30px rgba(255, 47, 146, .6);
   }
 }
 
 @keyframes colorShift2 {
   0% {
     color: var(--accent2);
+    text-shadow: 0 0 12px var(--accent2), 0 0 30px rgba(255, 47, 146, .6);
   }
-
   100% {
     color: var(--accent1);
+    text-shadow: 0 0 12px var(--accent1), 0 0 30px rgba(184, 0, 255, .6);
   }
 }
 
@@ -204,6 +206,7 @@ h1 span:nth-child(2) {
 }
 
 .settings-btn,
+.settings-btn2,
 .close-settings {
   position: absolute;
   top: 14px;
@@ -224,7 +227,12 @@ h1 span:nth-child(2) {
   box-shadow: 0 0 10px rgba(184, 0, 255, 0.25);
 }
 
+.settings-btn2 {
+  left: 14px;
+}
+
 .settings-btn:hover,
+.settings-btn2:hover,
 .close-settings:hover {
   color: var(--accent2);
   box-shadow: 0 0 16px rgba(255, 47, 146, 0.45), 0 0 8px rgba(184, 0, 255, 0.25);
@@ -232,6 +240,7 @@ h1 span:nth-child(2) {
 }
 
 .settings-btn:active,
+.settings-btn2:hover,
 .close-settings:active {
   transform: scale(.95);
   box-shadow: 0 0 6px rgba(255, 47, 146, 0.3);
@@ -241,7 +250,7 @@ h1 span:nth-child(2) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: left; /* ← texto alineado con los inputs */
+  text-align: left; 
   gap: 10px;
   padding: 20px 0;
 }
@@ -276,7 +285,7 @@ h1 span:nth-child(2) {
   outline: none;
   transition: all .25s ease;
   box-shadow: 0 0 20px rgba(184, 0, 255, 0.15) inset;
-  margin-bottom: 10px; /* espacio justo debajo de cada input */
+  margin-bottom: 10px; 
   text-align: center;
   display: block;
 }
@@ -315,6 +324,10 @@ h1 span:nth-child(2) {
   position: relative;
 }
 
+.card-container.flipped-left .card-inner {
+  transform: rotateY(-180deg);
+}
+
 .card-inner {
   position: absolute;
   inset: 0;
@@ -347,6 +360,9 @@ h1 span:nth-child(2) {
 .card.back {
   transform: rotateY(180deg);
   z-index: 1;
+}
+.card.back.config {
+  transform: rotateY(-180deg);
 }
 
 .card.face * {
@@ -387,4 +403,85 @@ h1 span:nth-child(2) {
   font-size: 14px;
   text-align: center;
   margin-top: 8px;
+}
+
+.config-table-container {
+  max-height: clamp(220px, 45vh, 360px);
+  overflow-y: auto;
+  overflow-x: hidden; 
+  margin-top: 1rem;
+  width: 85%;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 0 20px rgba(255, 47, 146, 0.1),
+    0 0 25px rgba(184, 0, 255, 0.08);
+  backdrop-filter: blur(10px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent2) transparent;
+}
+
+.config-table-container::-webkit-scrollbar {
+  width: 10px;
+  height: 0; 
+}
+.config-table-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent1), var(--accent2));
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 47, 146, 0.6);
+}
+.config-table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.config-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  text-align: left;
+  overflow-x: hidden;
+}
+
+.config-table thead {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  backdrop-filter: blur(6px);
+  color: var(--accent2);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.config-table th,
+.config-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.config-table th:first-child,
+.config-table td:first-child {
+  text-align: center;
+  width: 48px;
+  color: var(--muted);
+}
+
+.config-table tbody tr {
+  transition: background 0.25s ease, transform 0.15s ease;
+    overflow-x: hidden;
+
+}
+
+.config-table tbody tr:hover {
+  background: rgba(255, 47, 146, 0.12);
+  transform: scale(1.01);
+  box-shadow: inset 0 0 8px rgba(255, 47, 146, 0.2);
+}
+
+.config-table td:last-child {
+  color: var(--text);
+  text-shadow: 0 0 4px rgba(255, 47, 146, 0.2);
+  line-height: 1.4;
 }

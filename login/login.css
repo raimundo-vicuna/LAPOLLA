@@ -76,7 +76,7 @@ button:hover {
 .hidden {
   display: none;
 }
-/* Loader */
+
 .loader {
   display: flex;
   flex-direction: column;

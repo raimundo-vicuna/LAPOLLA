@@ -21,10 +21,11 @@
     <main class="card-container">
       <div class="card-inner">
         <div class="card face front">
-          <button class="settings-btn"><i class="fa-solid fa-gear"></i></button>
+          <button class="settings-btn"><i class="fa-solid fa-add"></i></button>
+          <button class="settings-btn2"><i class="fa-solid fa-list"></i></button>
           <div class="card-content">
             <div class="title">Selecciona un número</div>
-            <div class="subtitle" style="text-align: center;">Escribe un número del 1 al 158</div>
+            <div class="subtitle range" style="text-align: center;"></div>
             <div class="dial">
               <input id="numero" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="1"
                 aria-label="Número entre 1 y 158" />
@@ -50,8 +51,17 @@
           <div class="subtitle error"></div>
           <button id="subirBtn" class="buscar-btn">Subir</button>
         </div>
+
+        <div class="card face back config">
+          <button class="close-settings"><i class="fa-solid fa-xmark"></i></button>
+          <h2>Configuración</h2>
+          <div class="subtitle" style="text-align: center">Tus juegos</div>
+        </div>
+
+
       </div>
     </main>
+    <div style="text-align: center;margin-top: 1.5rem;" class="subtitle">Escribe 00 para ingresar a la consola</div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

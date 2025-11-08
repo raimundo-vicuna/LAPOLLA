@@ -5,14 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/admin_dashboard/styles.css">
     <link rel="icon" type="image/png" sizes="512x512" href="../icons/icon-512.png">
-
 </head>
 
 <body>
-    <div class="dashboard">
+    <div class="dashboard">        
         <h1>Admin Dashboard</h1>
+        <div class="buttons">
+            <button id="logoutBtn" class="logout">Cerrar sesión</button>
+            <button id="nuevasBtn" class="logout">Nuevas Frases</button>
+            <button id="antiguasBtn" class="logout">Frases actuales</button>
+        </div>
 
         <div id="loader" class="loader">
             <div class="spinner"></div>
@@ -37,8 +41,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="../firebaseConfig.js"></script>
-
-    <script src="script.js"></script>
+    <script src="/admin_dashboard/script.js"></script>
 </body>
 
 </html>

@@ -25,15 +25,23 @@ form.addEventListener("submit", async (e) => {
     loader.classList.add("hidden");
 
     if (accesoConcedido) {
-      const token = crypto.randomUUID();
+      const token = (self.crypto && self.crypto.getRandomValues)
+        ? ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+        : Math.random().toString(36).substring(2) + Date.now().toString(36);
+
       const expiry = Date.now() + 60 * 60 * 1000;
+
       localStorage.setItem("auth_token", token);
       localStorage.setItem("token_expiry", expiry);
       localStorage.setItem("user", username);
+
       window.location.href = "../admin_dashboard";
     } else {
+      errorMsg.textContent = "Usuario o contraseña incorrectos";
       errorMsg.classList.remove("hidden");
     }
+
   } catch (error) {
     console.error("Error al verificar el login:", error);
     loader.classList.add("hidden");
