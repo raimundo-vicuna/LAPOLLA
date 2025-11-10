@@ -485,3 +485,12 @@ h1 span:nth-child(2) {
   text-shadow: 0 0 4px rgba(255, 47, 146, 0.2);
   line-height: 1.4;
 }
+
+.card.back {
+  -webkit-overflow-scrolling: touch;
+}
+
+.card-container.flipped .card-inner,
+.card-container.flipped-left .card-inner {
+  height: auto !important; 
+}

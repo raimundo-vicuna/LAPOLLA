@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="dashboard">        
+    <div class="dashboard">
         <h1>Admin Dashboard</h1>
         <div class="buttons">
             <button id="logoutBtn" class="logout">Cerrar sesión</button>
@@ -36,6 +36,13 @@
             </thead>
             <tbody id="table-body"></tbody>
         </table>
+
+        <div class="confirm-container">
+            <button id="confirmChanges" class="buscar-btn">Confirmar cambios</button>
+            <span id="changesCount">0 cambios pendientes</span>
+        </div>
+
+
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

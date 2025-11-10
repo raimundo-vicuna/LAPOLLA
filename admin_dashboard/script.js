@@ -156,4 +156,106 @@ function renderFrasesBack() {
   table.classList.remove("hidden");
 }
 
-renderFrasesBack()
+renderFrasesBack();
+
+let accionesPendientes = [];
+
+document.addEventListener("click", (e) => {
+  if (e.target.matches(".approve, .reject")) {
+    const id = e.target.getAttribute("item-id");
+    const action = e.target.classList.contains("approve") ? "accept" : "reject";
+    const row = e.target.closest("tr");
+    const index = accionesPendientes.findIndex(a => a.id === id);
+
+    if (index !== -1) {
+      accionesPendientes.splice(index, 1);
+      row.classList.remove("marked-accept", "marked-reject");
+    } else {
+      accionesPendientes.push({ id, action });
+      row.classList.remove("marked-accept", "marked-reject");
+      row.classList.add(action === "accept" ? "marked-accept" : "marked-reject");
+    }
+
+    const loader = document.getElementById("loader");
+    loader.classList.remove("hidden");
+    document.getElementById("changesCount").textContent =
+      `${accionesPendientes.length} cambio(s) pendiente(s)`;
+    setTimeout(() => loader.classList.add("hidden"), 1500);
+  }
+
+  if (e.target.id === "confirmChanges") {
+    confirmarCambios();
+  }
+});
+
+let enEjecucion = false;
+
+async function confirmarCambios() {
+  if (enEjecucion) return;
+  enEjecucion = true;
+
+  if (!accionesPendientes.length) {
+    alert("No hay cambios pendientes.");
+    enEjecucion = false;
+    return;
+  }
+
+  const confirmar = confirm(`¿Aplicar ${accionesPendientes.length} cambio(s)?`);
+  if (!confirmar) {
+    enEjecucion = false;
+    return;
+  }
+
+  const loader = document.getElementById("loader");
+  loader.classList.remove("hidden");
+  loader.innerHTML = "<p>Aplicando cambios...</p>";
+
+  try {
+    const frasesSnapshot = await db.collection("frases").get();
+    let nextId = frasesSnapshot.size + 1;
+
+    for (const acc of accionesPendientes) {
+      const ref = db.collection("frasesNuevas").doc(acc.id);
+      const doc = await ref.get();
+      if (!doc.exists) continue;
+
+      if (acc.action === "accept") {
+        const data = doc.data();
+        const texto = data.texto || data.frase || data.value || data.text;
+        if (!texto || texto.trim() === "") continue;
+
+        await db.collection("frases").doc(String(nextId)).set({
+          texto,
+          apiKey: "penedegorila007"
+        });
+        await ref.delete();
+        nextId++;
+      }
+
+      if (acc.action === "reject") {
+        await ref.delete();
+      }
+    }
+
+    accionesPendientes = [];
+    document.querySelectorAll("tr.marked-accept, tr.marked-reject").forEach(r => {
+      r.classList.remove("marked-accept", "marked-reject");
+    });
+    document.getElementById("changesCount").textContent = "0 cambios pendientes";
+
+    loader.innerHTML = "<p style='color:#77ff8e'>Cambios aplicados correctamente ✅</p>";
+    setTimeout(() => {
+      loader.classList.add("hidden");
+      enEjecucion = false;
+    }, 2000);
+
+    await cargarFrases();
+  } catch (err) {
+    console.error("Error al aplicar cambios:", err);
+    loader.innerHTML = "<p>Error al aplicar cambios.</p>";
+    setTimeout(() => {
+      loader.classList.add("hidden");
+      enEjecucion = false;
+    }, 2000);
+  }
+}

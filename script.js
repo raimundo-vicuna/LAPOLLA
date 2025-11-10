@@ -90,6 +90,7 @@ async function agregarNuevaFrase() {
 
     await db.collection("frasesNuevas").add(set);
     mostrarMensaje("Frase subida con éxito", true);
+    console.log(set)
   } catch (e) {
     if (e.message.includes("Campos vacíos")) return;
     mostrarMensaje("Error al subir la frase. Revisa la conexión o permisos.", false);
@@ -131,15 +132,15 @@ function renderFrasesBack() {
     </thead>
     <tbody>
       ${Object.entries(frases)
-        .map(
-          ([num, texto]) => `
+      .map(
+        ([num, texto]) => `
           <tr>
             <td>${num}</td>
             <td>${texto}</td>
           </tr>
         `
-        )
-        .join("")}
+      )
+      .join("")}
     </tbody>
   `;
 
@@ -168,8 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".card-container");
   const front = document.querySelector(".card.front");
   const backs = document.querySelectorAll(".card.back");
-  const settingsBtn = document.querySelector(".settings-btn");   
-  const settingsBtn2 = document.querySelector(".settings-btn2"); 
+  const settingsBtn = document.querySelector(".settings-btn");
+  const settingsBtn2 = document.querySelector(".settings-btn2");
   const closeBtns = document.querySelectorAll(".close-settings");
   const fraseBox = document.getElementById("frase");
 
@@ -181,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const h = Math.max(hFront, hBack);
     container.style.height = h + "px";
   }
+
 
   function flipTo(backSelector, directionClass) {
     backs.forEach(b => b.style.zIndex = "0");
@@ -197,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function flipLeft() {
-    flipTo(".card.back.config", "flipped-left"); 
+    flipTo(".card.back.config", "flipped-left");
   }
 
   function flipOff() {
