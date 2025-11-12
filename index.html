@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,14 +11,15 @@
   <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
   <title>La Polla</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-
 <body>
   <div class="wrapper">
     <h1><span>La</span><span> Polla</span></h1>
 
     <main class="card-container">
       <div class="card-inner">
+
         <div class="card face front">
           <button class="settings-btn"><i class="fa-solid fa-add"></i></button>
           <button class="settings-btn2"><i class="fa-solid fa-list"></i></button>
@@ -27,11 +27,12 @@
             <div class="title">Selecciona un número</div>
             <div class="subtitle range" style="text-align: center;"></div>
             <div class="dial">
-              <input id="numero" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="1"
-                aria-label="Número entre 1 y 158" />
+              <input id="numero" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="1" aria-label="Número entre 1 y 158" />
+              <button id="randomBtn" class="random-btn"><i class="fa-solid fa-dice"></i></button>
+              <button id="infoBtn" class="info-btn"><i class="fa-solid fa-info"></i></button>
             </div>
             <button id="buscarBtn" class="buscar-btn">Buscar</button>
-            <div class="help">Escribe el número y presiona el botón</div>
+            <div class="help">Escribe el número o presiona el dado</div>
             <div id="frase" class="frase"></div>
           </div>
         </div>
@@ -40,35 +41,41 @@
           <button class="close-settings"><i class="fa-solid fa-xmark"></i></button>
           <h2>Subir Juegos</h2>
           <div class="subtitle" style="text-align: center;">Escribe un juego/reto para añadirlo al juego</div>
-
           <h5 class="subtitle">Escribe tu nombre</h5>
           <input type="text" class="menu-input" id="autor" placeholder="Escribe algo..." />
           <h5 class="subtitle">Escribe el nombre del juego</h5>
           <input type="text" class="menu-input" id="nuevaFrase" placeholder="Escribe algo..." />
-          <h5 class="subtitle">Escribe la explicacion del juego</h5>
-          <input type="text" class="menu-input" id="descripcion" placeholder="Escribe algo..."></input>
-
+          <h5 class="subtitle">Escribe la explicación del juego</h5>
+          <input type="text" class="menu-input" id="descripcion" placeholder="Escribe algo...">
           <div class="subtitle error"></div>
           <button id="subirBtn" class="buscar-btn">Subir</button>
         </div>
 
         <div class="card face back config">
           <button class="close-settings"><i class="fa-solid fa-xmark"></i></button>
-          <h2>Configuración</h2>
-          <div class="subtitle" style="text-align: center">Tus juegos</div>
+          <h2>Tus juegos</h2>
+          <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input id="searchInput" type="text" class="menu-input search-input" placeholder="Buscar juego..." autocomplete="off" />
+          </div>
+          <div id="cards-container" class="cards-container"></div>
+          <div class="pagination">
+            <button id="prevPage" class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <button id="nextPage" class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
         </div>
-
 
       </div>
     </main>
-    <div style="text-align: center;margin-top: 1.5rem;" class="subtitle">Escribe 00 para ingresar a la consola</div>
+
+    <div style="text-align: center;margin-top: 1.5rem;" class="subtitle">
+      Escribe 00 para ingresar a la consola
+    </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebaseConfig.js"></script>
-  <script src="https://kit.fontawesome.com/f1b26fbbec.js" crossorigin="anonymous"></script>
   <script src="script.js"></script>
 </body>
-
 </html>
