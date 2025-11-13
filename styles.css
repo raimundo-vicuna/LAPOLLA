@@ -763,7 +763,6 @@ h1 span:nth-child(2) {
 
 .random-btn {
   position: absolute;
-  right: -95px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #bfbfbf;
@@ -808,7 +807,6 @@ h1 span:nth-child(2) {
 
 .info-btn {
   position: absolute;
-  left: -95px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #bfbfbf;
@@ -835,3 +833,57 @@ h1 span:nth-child(2) {
   box-shadow: 0 0 10px rgba(255, 47, 146, 0.3);
 }
 
+.recharge-btn {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #bfbfbf;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease;
+  backdrop-filter: blur(6px);
+}
+
+.recharge-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(255, 47, 146, 0.45);
+}
+
+.recharge-btn:active {
+  transform: scale(.94);
+  box-shadow: 0 0 10px rgba(255, 47, 146, 0.3);
+}
+
+@media only screen and (max-width: 430px) {
+  .info-btn {
+    left: -4rem;
+  }
+
+  .random-btn {
+    right: -4rem;
+  }
+}
+
+.dial-buttons {
+  position: absolute;
+  right: -4rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.info-btn,
+.recharge-btn,
+.random-btn {
+  position: static !important;
+  margin: 0;
+}

@@ -205,10 +205,52 @@ document.addEventListener("DOMContentLoaded", () => {
   const settingsBtn2 = document.querySelector(".settings-btn2");
   const closeBtns = document.querySelectorAll(".close-settings");
   const fraseBox = document.getElementById("frase");
+  const rechargeBtn = document.getElementById("rechargeBtn");
 
   let activeBack = null;
   let animating = false;
   let mainHeight = null;
+
+async function rechargeFrases() {
+  const rechargeBtn = document.getElementById("rechargeBtn");
+
+  rechargeBtn.disabled = true;
+  rechargeBtn.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i>';
+
+  try {
+    localStorage.removeItem("frases");
+    localStorage.removeItem("range");
+
+    await cargarFrases();
+
+    setTimeout(() => {
+      rechargeBtn.style.borderColor = "#4CAF50";
+      rechargeBtn.innerHTML = '<i class="fa-solid fa-check" style="color:#4CAF50"></i>';
+
+      setTimeout(() => {
+        rechargeBtn.style.borderColor = "";
+        rechargeBtn.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+        rechargeBtn.disabled = false;
+      }, 700);
+
+    }, 700);
+
+  } catch (e) {
+    setTimeout(() => {
+      rechargeBtn.style.borderColor = "#ff3b3b";
+      rechargeBtn.innerHTML = '<i class="fa-solid fa-xmark" style="color:#ff3b3b"></i>';
+
+      setTimeout(() => {
+        rechargeBtn.style.borderColor = "";
+        rechargeBtn.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+        rechargeBtn.disabled = false;
+      }, 700);
+
+    }, 700);
+  }
+}
+
+  rechargeBtn.addEventListener("click", rechargeFrases);
 
   function updateCardHeights() {
     if (!mainHeight) mainHeight = front.offsetHeight;
