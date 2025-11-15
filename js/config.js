@@ -12,42 +12,42 @@ let redoStack = [];
 let enEjecucion = false;
 let currentView = "actuales";
 
+const toggleViewBtn = document.getElementById("toggleViewBtn");
+
+function actualizarToggleButton() {
+  toggleViewBtn.textContent =
+    currentView === "actuales" ? "Ver Nuevas Frases" : "Ver Frases Actuales";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("auth_token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("token_expiry");
-      window.location.href = "../login/login.html";
-    });
-  }
 
-  const nuevasBTN = document.getElementById("nuevasBtn");
-  if (nuevasBTN) {
-    nuevasBTN.addEventListener("click", () => {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token_expiry");
+    window.location.href = "game.html";
+  });
+
+  toggleViewBtn.addEventListener("click", () => {
+    accionesPendientes = [];
+    undoStack = [];
+    redoStack = [];
+    document.getElementById("changesCount").textContent =
+      "0 cambio(s) pendiente(s)";
+
+    if (currentView === "actuales") {
       currentView = "nuevas";
-      accionesPendientes = [];
-      undoStack = [];
-      redoStack = [];
-      document.getElementById("changesCount").textContent =
-        "0 cambio(s) pendiente(s)";
       cargarFrases();
-    });
-  }
-
-  const frasesACbtn = document.getElementById("antiguasBtn");
-  if (frasesACbtn) {
-    frasesACbtn.addEventListener("click", () => {
+    } else {
       currentView = "actuales";
-      accionesPendientes = [];
-      undoStack = [];
-      redoStack = [];
-      document.getElementById("changesCount").textContent =
-        "0 cambio(s) pendiente(s)";
       renderFrasesBack();
-    });
-  }
+    }
+    actualizarToggleButton();
+  });
+
+  actualizarToggleButton();
+  renderFrasesBack();
 });
 
 function pushUndo(action) {
@@ -59,7 +59,6 @@ function aplicarDeshacer() {
   if (!undoStack.length) return;
   const action = undoStack.pop();
   redoStack.push(JSON.parse(JSON.stringify(action)));
-
   if (action.view !== currentView) return;
 
   const approveBtn = document.querySelector(
@@ -72,7 +71,6 @@ function aplicarDeshacer() {
   if (action.kind === "edit") {
     const fraseCell = row.querySelector('td[data-label="Frase"]');
     const descCell = row.querySelector('td[data-label="Descripción"]');
-
     if (fraseCell) fraseCell.textContent = action.prevText || "(sin texto)";
     if (descCell) descCell.textContent = action.prevDes || "-";
 
@@ -102,7 +100,6 @@ function aplicarDeshacer() {
     const idx = accionesPendientes.findIndex(
       (a) => a.id === action.id && a.type === "delete"
     );
-
     if (action.wasDeleted) {
       if (idx === -1) {
         accionesPendientes.push({
@@ -125,7 +122,6 @@ function aplicarRehacer() {
   if (!redoStack.length) return;
   const action = redoStack.pop();
   undoStack.push(JSON.parse(JSON.stringify(action)));
-
   if (action.view !== currentView) return;
 
   const approveBtn = document.querySelector(
@@ -138,7 +134,6 @@ function aplicarRehacer() {
   if (action.kind === "edit") {
     const fraseCell = row.querySelector('td[data-label="Frase"]');
     const descCell = row.querySelector('td[data-label="Descripción"]');
-
     if (fraseCell) fraseCell.textContent = action.newText || "(sin texto)";
     if (descCell) descCell.textContent = action.newDes || "-";
 
@@ -164,7 +159,6 @@ function aplicarRehacer() {
     const idx = accionesPendientes.findIndex(
       (a) => a.id === action.id && a.type === "delete"
     );
-
     if (action.wasDeleted) {
       if (idx !== -1) accionesPendientes.splice(idx, 1);
     } else {
@@ -584,5 +578,3 @@ async function confirmarCambios() {
     }, 1500);
   }
 }
-
-renderFrasesBack();

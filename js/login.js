@@ -36,7 +36,7 @@ form.addEventListener("submit", async (e) => {
       localStorage.setItem("token_expiry", expiry);
       localStorage.setItem("user", username);
 
-      window.location.href = "../admin_dashboard";
+      window.location.href = "config.html";
     } else {
       errorMsg.textContent = "Usuario o contraseña incorrectos";
       errorMsg.classList.remove("hidden");

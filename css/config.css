@@ -12,6 +12,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  touch-action: manipulation;
+}
+
 body {
   margin: 0;
   font-family: 'Poppins', 'Inter', sans-serif;
@@ -246,13 +250,36 @@ tr.marked-reject {
 
 .buttons {
   display: flex;
-  flex-direction: row-reverse;
   justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .buttons button {
-  max-width: 15%;
-  margin-right: 2rem;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--text);
+  border: none;
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 120px;
+  box-shadow: 0 0 12px rgba(184,0,255,0.45);
+  transition: 0.2s;
+}
+
+
+.buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(255, 47, 146, 0.5);
+}
+
+.buttons button:active {
+  transform: scale(0.96);
 }
 
 .data-table th:first-child,

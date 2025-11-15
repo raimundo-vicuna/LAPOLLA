@@ -10,6 +10,11 @@
 
 * { box-sizing: border-box; }
 
+html, body {
+  touch-action: manipulation;
+}
+
+
 body {
   margin: 0;
   height: 100vh;
