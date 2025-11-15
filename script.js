@@ -1,179 +1,149 @@
 let frases = {};
-let currentPage = 0;
-const itemsPerPage = 3;
-let filteredFrases = [];
+let descripciones = {};
 let shownFrases = [];
+let currentPage = 0;
+let filteredFrases = [];
+const itemsPerPage = 3;
+
+let RANDOM_SPIN_DURATION_MS = 1000;
+let RANDOM_SPIN_INTERVAL_MS = 100;
 
 async function cargarFrases() {
-  try {
-    const snapshot = await db.collection("frases").get();
-    if (snapshot.empty) return;
-    frases = {};
-    snapshot.forEach(doc => {
-      frases[doc.id] = doc.data().frase || doc.data().value || doc.data().texto || "(sin texto)";
-    });
-    localStorage.setItem("frases", JSON.stringify(frases));
-    localStorage.setItem("range", JSON.stringify(snapshot.size));
-  } catch {
-    mostrarMensaje("Error al cargar frases. Intenta más tarde.", false);
-  }
+  const snapshot = await db.collection("frases").get();
+  if (snapshot.empty) return;
+  frases = {};
+  descripciones = {};
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    frases[doc.id] = data.frase || data.value || data.texto || "(sin texto)";
+    descripciones[doc.id] = data.des || data.descripcion || "(sin descripción)";
+  });
+  localStorage.setItem("frases", JSON.stringify(frases));
+  localStorage.setItem("descripciones", JSON.stringify(descripciones));
+  localStorage.setItem("range", JSON.stringify(snapshot.size));
 }
 
 function mostrarFrase(num, random = false) {
-  const fraseBox = document.getElementById("frase");
-  fraseBox.classList.remove("repetida", "todas");
+  const box = document.getElementById("frase");
+  box.classList.remove("repetida", "todas");
   if (num === "00") {
-    fraseBox.textContent = "consola";
+    box.textContent = "consola";
     return;
   }
-
-  const texto = frases[num.toString()];
-  if (!texto) {
-    fraseBox.textContent = "Número no encontrado.";
+  const txt = frases[num];
+  if (!txt) {
+    box.textContent = "Número no encontrado.";
     return;
   }
-
-  if (shownFrases.includes(num.toString())) {
-    fraseBox.textContent = texto;
-    fraseBox.classList.add("repetida");
+  if (shownFrases.includes(num)) {
+    box.textContent = txt;
+    box.classList.add("repetida");
   } else {
-    fraseBox.textContent = texto;
-    shownFrases.push(num.toString());
+    box.textContent = txt;
+    shownFrases.push(num);
   }
-
   if (shownFrases.length === Object.keys(frases).length && random) {
-    fraseBox.textContent = "Ya se mostraron todas las frases.";
-    fraseBox.classList.add("todas");
+    box.textContent = "Ya se mostraron todas las frases.";
+    box.classList.add("todas");
   }
 }
 
 function buscar() {
-  const valor = document.getElementById("numero").value.trim();
-  if (!valor) {
-    mostrarMensaje("Por favor, ingresa un número válido.", false);
-    return;
-  }
-  if (valor.toString() === '00') window.open('login/index.html', "_blank");
-  mostrarFrase(valor);
+  const v = document.getElementById("numero").value.trim();
+  if (!v) return mostrarMensaje("Por favor, ingresa un número válido.", false);
+  if (v === "00") window.open("login/index.html", "_blank");
+  mostrarFrase(v);
 }
 
-function mostrarFraseAleatoria() {
-  const keys = Object.keys(frases);
-  const noMostradas = keys.filter(k => !shownFrases.includes(k));
-  const fraseBox = document.getElementById("frase");
-  fraseBox.classList.remove("todas");
-  if (noMostradas.length === 0) {
-    fraseBox.textContent = "Ya se mostraron todas las frases.";
-    fraseBox.classList.add("todas");
-    return;
-  }
-  const randomKey = noMostradas[Math.floor(Math.random() * noMostradas.length)];
-  mostrarFrase(randomKey, true);
-}
-
-function mostrarMensaje(mensaje, exito = false, tiempo = 3000) {
-  const msgBox = document.querySelector(".subtitle.error");
-  if (!msgBox) return;
-  msgBox.textContent = mensaje;
-  msgBox.style.display = "block";
-  msgBox.style.opacity = "1";
-  msgBox.style.color = exito ? "#77ff8e" : "#ff7ee5";
-  clearTimeout(msgBox.timer);
-  msgBox.timer = setTimeout(() => {
-    msgBox.style.opacity = "0";
-    setTimeout(() => (msgBox.style.display = "none"), 300);
-  }, tiempo);
+function mostrarMensaje(msg, ok = false, t = 3000) {
+  const box = document.querySelector(".subtitle.error");
+  if (!box) return;
+  box.textContent = msg;
+  box.style.display = "block";
+  box.style.opacity = "1";
+  box.style.color = ok ? "#77ff8e" : "#ff7ee5";
+  clearTimeout(box.timer);
+  box.timer = setTimeout(() => {
+    box.style.opacity = "0";
+    setTimeout(() => (box.style.display = "none"), 300);
+  }, t);
 }
 
 function obtenerDatos() {
-  const campos = ["autor", "nuevaFrase", "descripcion"];
-  const datos = campos.map(id => document.getElementById(id)?.value.trim() || "");
+  const ids = ["autor", "nuevaFrase", "descripcion"];
+  const datos = ids.map(id => document.getElementById(id).value.trim());
   if (datos.some(v => !v)) {
     mostrarMensaje("Completa todos los campos antes de subir.", false);
-    throw new Error("Campos vacíos");
+    throw "";
   }
-  campos.forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+  ids.forEach(id => (document.getElementById(id).value = ""));
   return datos;
 }
 
 async function agregarNuevaFrase() {
   try {
-    const data = obtenerDatos();
-    const apiKey = "penedegorila007";
-    const set = {
-      fecha: new Date(),
-      autor: data[0],
-      frase: data[1],
-      descripcion: data[2],
-      apiKey: apiKey
-    };
+    const d = obtenerDatos();
+    const set = { fecha: new Date(), autor: d[0], frase: d[1], descripcion: d[2], apiKey: "penedegorila007" };
     await db.collection("frasesNuevas").add(set);
     mostrarMensaje("Frase subida con éxito", true);
-  } catch (e) {
-    if (!e.message.includes("Campos vacíos"))
-      mostrarMensaje("Error al subir la frase. Revisa la conexión o permisos.", false);
-  }
+  } catch { }
 }
-document.querySelector("#subirBtn").addEventListener("click", agregarNuevaFrase);
+
+document.getElementById("subirBtn").addEventListener("click", agregarNuevaFrase);
 
 function renderFrasesCards() {
   const raw = localStorage.getItem("frases");
   if (!raw) return;
-
   const frasesData = Object.entries(JSON.parse(raw));
   filteredFrases = [...frasesData];
-
-  const cardsContainer = document.getElementById("cards-container");
-  const searchInput = document.getElementById("searchInput");
-  const prevBtn = document.getElementById("prevPage");
-  const nextBtn = document.getElementById("nextPage");
+  const c = document.getElementById("cards-container");
+  const search = document.getElementById("searchInput");
+  const prev = document.getElementById("prevPage");
+  const next = document.getElementById("nextPage");
 
   function renderPage() {
-    const totalPages = Math.ceil(filteredFrases.length / itemsPerPage);
-    currentPage = Math.max(0, Math.min(currentPage, totalPages - 1));
-
+    const total = Math.ceil(filteredFrases.length / itemsPerPage);
+    currentPage = Math.max(0, Math.min(currentPage, total - 1));
     const start = currentPage * itemsPerPage;
-    const end = start + itemsPerPage;
-    const currentItems = filteredFrases.slice(start, end);
-
-    cardsContainer.innerHTML = "";
-    currentItems.forEach(([num, texto], i) => {
+    const items = filteredFrases.slice(start, start + itemsPerPage);
+    c.innerHTML = "";
+    items.forEach(([n, t], i) => {
       const div = document.createElement("div");
       div.className = "card-item";
       div.style.transitionDelay = `${i * 0.05}s`;
-      div.innerHTML = `<h4>#${num}</h4><p>${texto}</p>`;
-      cardsContainer.appendChild(div);
+      div.innerHTML = `<h4>#${n}</h4><p>${t}</p>`;
+      c.appendChild(div);
       requestAnimationFrame(() => div.classList.add("show"));
     });
-
-    prevBtn.disabled = currentPage === 0;
-    nextBtn.disabled = currentPage >= totalPages - 1;
+    prev.disabled = currentPage === 0;
+    next.disabled = currentPage >= total - 1;
   }
 
-  prevBtn.onclick = () => {
-    cardsContainer.style.transform = "translateX(40px)";
-    cardsContainer.style.opacity = "0";
+  prev.onclick = () => {
+    c.style.transform = "translateX(40px)";
+    c.style.opacity = "0";
     setTimeout(() => {
       currentPage--;
       renderPage();
-      cardsContainer.style.transform = "translateX(0)";
-      cardsContainer.style.opacity = "1";
-    }, 150);
-  };
-  nextBtn.onclick = () => {
-    cardsContainer.style.transform = "translateX(-40px)";
-    cardsContainer.style.opacity = "0";
-    setTimeout(() => {
-      currentPage++;
-      renderPage();
-      cardsContainer.style.transform = "translateX(0)";
-      cardsContainer.style.opacity = "1";
+      c.style.transform = "translateX(0)";
+      c.style.opacity = "1";
     }, 150);
   };
 
-  searchInput.oninput = () => {
-    const query = searchInput.value.toLowerCase();
-    filteredFrases = frasesData.filter(([_, texto]) => texto.toLowerCase().includes(query));
+  next.onclick = () => {
+    c.style.transform = "translateX(-40px)";
+    c.style.opacity = "0";
+    setTimeout(() => {
+      currentPage++;
+      renderPage();
+      c.style.transform = "translateX(0)";
+      c.style.opacity = "1";
+    }, 150);
+  };
+
+  search.oninput = () => {
+    const q = search.value.toLowerCase();
+    filteredFrases = frasesData.filter(([_, t]) => t.toLowerCase().includes(q));
     currentPage = 0;
     renderPage();
   };
@@ -181,116 +151,136 @@ function renderFrasesCards() {
   renderPage();
 }
 
-window.onload = async () => {
-  const guardadas = localStorage.getItem("frases");
-  if (guardadas) frases = JSON.parse(guardadas);
-  else await cargarFrases();
-
-  const rangeDiv = document.querySelector(".range");
-  rangeDiv.textContent = `Escribe un número del 1 al ${localStorage.getItem("range") || 158}`;
+function runRandomSpin(onFinish) {
+  const keys = Object.keys(frases);
   const input = document.getElementById("numero");
-  const btn = document.getElementById("buscarBtn");
-  const randomBtn = document.getElementById("randomBtn");
-  input.addEventListener("keydown", e => { if (e.key === "Enter") buscar(); });
-  btn.addEventListener("click", buscar);
-  btn.addEventListener("touchstart", buscar);
-  randomBtn.addEventListener("click", mostrarFraseAleatoria);
+  let interval = setInterval(() => {
+    input.value = keys[Math.floor(Math.random() * keys.length)];
+  }, RANDOM_SPIN_INTERVAL_MS);
+  setTimeout(() => {
+    clearInterval(interval);
+    const f = keys[Math.floor(Math.random() * keys.length)];
+    input.value = f;
+    onFinish(f);
+  }, RANDOM_SPIN_DURATION_MS);
+}
+
+window.onload = async () => {
+  const f = localStorage.getItem("frases");
+  const d = localStorage.getItem("descripciones");
+  if (f && d) {
+    frases = JSON.parse(f);
+    descripciones = JSON.parse(d);
+  } else {
+    await cargarFrases();
+  }
+  document.querySelector(".range").textContent = `Escribe un número del 1 al ${localStorage.getItem("range")}`;
+  const input = document.getElementById("numero");
+  document.getElementById("buscarBtn").addEventListener("click", buscar);
+  document.getElementById("buscarBtn").addEventListener("touchstart", buscar);
+  input.addEventListener("keydown", e => e.key === "Enter" && buscar());
+  document.getElementById("randomBtn").addEventListener("click", () => {
+    runRandomSpin(num => mostrarFrase(num, true));
+  });
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".card-container");
   const front = document.querySelector(".card.front");
   const backs = document.querySelectorAll(".card.back");
-  const settingsBtn = document.querySelector(".settings-btn");
-  const settingsBtn2 = document.querySelector(".settings-btn2");
+  const settings1 = document.querySelector(".settings-btn");
+  const settings2 = document.querySelector(".settings-btn2");
   const closeBtns = document.querySelectorAll(".close-settings");
   const fraseBox = document.getElementById("frase");
-  const rechargeBtn = document.getElementById("rechargeBtn");
+  const recharge = document.getElementById("rechargeBtn");
 
-  let activeBack = null;
   let animating = false;
   let mainHeight = null;
 
-async function rechargeFrases() {
-  const rechargeBtn = document.getElementById("rechargeBtn");
-
-  rechargeBtn.disabled = true;
-  rechargeBtn.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i>';
-
-  try {
-    localStorage.removeItem("frases");
-    localStorage.removeItem("range");
-
-    await cargarFrases();
-
-    setTimeout(() => {
-      rechargeBtn.style.borderColor = "#4CAF50";
-      rechargeBtn.innerHTML = '<i class="fa-solid fa-check" style="color:#4CAF50"></i>';
-
+  async function rechargeFrases() {
+    recharge.disabled = true;
+    recharge.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i>';
+    try {
+      localStorage.removeItem("frases");
+      localStorage.removeItem("descripciones");
+      localStorage.removeItem("range");
+      shownFrases = [];
+      document.getElementById("numero").value = "";
+      document.getElementById("frase").textContent = "";
+      await cargarFrases();
       setTimeout(() => {
-        rechargeBtn.style.borderColor = "";
-        rechargeBtn.innerHTML = '<i class="fa-solid fa-rotate"></i>';
-        rechargeBtn.disabled = false;
+        recharge.style.borderColor = "#4CAF50";
+        recharge.innerHTML = '<i class="fa-solid fa-check" style="color:#4CAF50"></i>';
+        setTimeout(() => {
+          recharge.style.borderColor = "";
+          recharge.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+          recharge.disabled = false;
+        }, 700);
       }, 700);
-
-    }, 700);
-
-  } catch (e) {
-    setTimeout(() => {
-      rechargeBtn.style.borderColor = "#ff3b3b";
-      rechargeBtn.innerHTML = '<i class="fa-solid fa-xmark" style="color:#ff3b3b"></i>';
-
+    } catch {
       setTimeout(() => {
-        rechargeBtn.style.borderColor = "";
-        rechargeBtn.innerHTML = '<i class="fa-solid fa-rotate"></i>';
-        rechargeBtn.disabled = false;
+        recharge.style.borderColor = "#ff3b3b";
+        recharge.innerHTML = '<i class="fa-solid fa-xmark" style="color:#ff3b3b"></i>';
+        setTimeout(() => {
+          recharge.style.borderColor = "";
+          recharge.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+          recharge.disabled = false;
+        }, 700);
       }, 700);
-
-    }, 700);
+    }
   }
-}
 
-  rechargeBtn.addEventListener("click", rechargeFrases);
+  recharge.addEventListener("click", rechargeFrases);
 
-  function updateCardHeights() {
+  function updateHeights() {
     if (!mainHeight) mainHeight = front.offsetHeight;
-    document.querySelectorAll(".card").forEach(card => {
-      card.style.height = `${mainHeight}px`;
+    document.querySelectorAll(".card").forEach(c => {
+      c.style.height = `${mainHeight}px`;
     });
   }
 
-  function flipTo(selector, direction) {
+  function flip(selector, dir) {
     if (animating) return;
     animating = true;
     backs.forEach(b => (b.style.zIndex = "0"));
-    activeBack = document.querySelector(selector);
-    if (activeBack) activeBack.style.zIndex = "1";
+    const active = document.querySelector(selector);
+    active.style.zIndex = "1";
     container.classList.remove("flipped", "flipped-left");
-    container.classList.add(direction);
-    updateCardHeights();
+    container.classList.add(dir);
+    updateHeights();
     setTimeout(() => (animating = false), 850);
   }
 
-  function flipRight() { flipTo(".card.back", "flipped"); }
-  function flipLeft() {
-    flipTo(".card.back.config", "flipped-left");
+  settings1.addEventListener("click", () => flip(".card.back", "flipped"));
+  settings2.addEventListener("click", () => {
+    flip(".card.back.config", "flipped-left");
     setTimeout(renderFrasesCards, 400);
-  }
-  function flipOff() {
-    if (animating) return;
+  });
+  closeBtns.forEach(btn => btn.addEventListener("click", () => {
     container.classList.remove("flipped", "flipped-left");
-    activeBack = null;
-  }
+  }));
 
-  if (settingsBtn) settingsBtn.addEventListener("click", flipRight);
-  if (settingsBtn2) settingsBtn2.addEventListener("click", flipLeft);
-  closeBtns.forEach(btn => btn.addEventListener("click", flipOff));
+  window.addEventListener("resize", updateHeights);
 
-  window.addEventListener("resize", updateCardHeights);
-  if (fraseBox) {
-    const mo = new MutationObserver(updateCardHeights);
-    mo.observe(fraseBox, { childList: true, characterData: true, subtree: true });
-  }
+  const infoBtn = document.getElementById("infoBtn");
+  const popup = document.getElementById("infoPopup");
+  const closeInfo = document.getElementById("closeInfo");
 
-  requestAnimationFrame(updateCardHeights);
+  infoBtn.addEventListener("click", () => {
+    const num = document.getElementById("numero").value.trim();
+    if (!num || !frases[num]) return mostrarMensaje("Primero busca un número válido.", false);
+    document.getElementById("infoTitle").textContent = `#${num}`;
+    document.getElementById("infoDescription").textContent = descripciones[num] || "(Sin descripción)";
+    popup.classList.add("show");
+  });
+
+  closeInfo.addEventListener("click", () => popup.classList.remove("show"));
+  popup.addEventListener("click", e => {
+    if (e.target === popup) popup.classList.remove("show");
+  });
+
+  const mo = new MutationObserver(updateHeights);
+  mo.observe(fraseBox, { childList: true, subtree: true });
+
+  requestAnimationFrame(updateHeights);
 });

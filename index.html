@@ -16,6 +16,17 @@
 </head>
 
 <body>
+  
+  <div id="infoPopup" class="info-popup">
+    <div class="info-popup-content">
+      <h3 id="infoTitle">#0</h3>
+      <p id="infoDescription">Descripción...</p>
+      <button id="closeInfo" class="close-info-btn">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
   <div class="wrapper">
     <h1><span>La</span><span> Polla</span></h1>
 
@@ -29,12 +40,13 @@
             <div class="title">Selecciona un número</div>
             <div class="subtitle range" style="text-align: center;"></div>
             <div class="dial">
-              <input id="numero" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="?" aria-label="Input del numero" />
+              <input id="numero" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="?"
+                aria-label="Input del numero" />
 
               <div class="dial-buttons">
-                <button id="infoBtn" class="info-btn"><i class="fa-solid fa-info"></i></button>
-                <button id="randomBtn" class="random-btn"><i class="fa-solid fa-dice"></i></button>
                 <button id="rechargeBtn" class="recharge-btn"><i class="fa-solid fa-rotate-right"></i></button>
+                <button id="randomBtn" class="random-btn"><i class="fa-solid fa-dice"></i></button>
+                <button id="infoBtn" class="info-btn"><i class="fa-solid fa-info"></i></button>
               </div>
             </div>
 
