@@ -17,11 +17,13 @@
 </head>
 
 <body>
-  
+
   <div id="infoPopup" class="info-popup">
     <div class="info-popup-content">
       <h3 id="infoTitle">#0</h3>
-      <p id="infoDescription">Descripción...</p>
+      <div>
+        <p id="infoDescription">Descripción...</p>
+      </div>
       <button id="closeInfo" class="close-info-btn">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -45,10 +47,15 @@
                 aria-label="Input del numero" />
 
               <div class="dial-buttons">
-                <button id="rechargeBtn" class="recharge-btn"><i class="fa-solid fa-rotate-right"></i></button>
                 <button id="randomBtn" class="random-btn"><i class="fa-solid fa-dice"></i></button>
                 <button id="infoBtn" class="info-btn"><i class="fa-solid fa-info"></i></button>
               </div>
+              
+              <div class="dial-buttons-left">
+                <button id="rechargeBtn" class="recharge-btn"><i class="fa-solid fa-rotate-right"></i></button>
+                <button id="history" class="history-btn"><i class="fa-solid fa-history"></i></button>
+              </div>
+
             </div>
 
             <button id="buscarBtn" class="buscar-btn">Buscar</button>
