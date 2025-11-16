@@ -266,7 +266,6 @@ window.onload = async () => {
   const input = document.getElementById("numero");
 
   document.getElementById("buscarBtn").addEventListener("click", buscar);
-  document.getElementById("buscarBtn").addEventListener("touchstart", buscar);
   input.addEventListener("keydown", e => e.key === "Enter" && buscar());
 
   document.getElementById("randomBtn").addEventListener("click", () => {
