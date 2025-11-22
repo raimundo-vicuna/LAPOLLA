@@ -48,14 +48,14 @@ h1 span:nth-child(1) {
   color: var(--accent1);
   text-shadow: 0 0 12px var(--accent1), 0 0 30px rgba(184, 0, 255, .6), 0 0 60px rgba(184, 0, 255, .3);
   transform: skewX(-10deg);
-  animation: colorShift1 6s ease-in-out infinite alternate;
+  animation: colorShift1 4s ease-in-out infinite alternate;
 }
 
 h1 span:nth-child(2) {
   color: var(--accent2);
   text-shadow: 0 0 12px var(--accent2), 0 0 30px rgba(255, 47, 146, .6), 0 0 60px rgba(255, 47, 146, .3);
   transform: skewX(-8deg);
-  animation: colorShift2 6s ease-in-out infinite alternate;
+  animation: colorShift2 4s ease-in-out infinite alternate;
 }
 
 @keyframes colorShift1 {

@@ -1,10 +1,16 @@
 {
   "name": "La Polla",
   "short_name": "La Polla",
+  "description": "Juego de beber basado en números, retos y risas.",
   "start_url": ".",
+  "scope": ".",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
   "background_color": "#0b0013",
   "theme_color": "#b800ff",
+  "orientation": "portrait",
+  "categories": ["games", "entertainment"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icons/icon-64.png",
